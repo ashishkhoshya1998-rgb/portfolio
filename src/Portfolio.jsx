@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, createContext, useContext } from "react";
+import React, { useState, useEffect, useRef, useCallback, createContext, useContext } from "react";
 
 /* ═══ THEME ═══ */
 const themes = {
@@ -219,104 +219,234 @@ function ZDOTS({ goBack }) { const { t } = useTheme(); const C = AMBER; return (
 
 /* ═══ GSTR-3B — FULL DEPTH ═══ */
 function GSTR3BDetail({ goBack }) { const { t } = useTheme(); const C = GREEN, m = useIsMobile(); useEffect(() => { window.scrollTo(0, 0); }, []); return (<Wrap>
-  <Hero2 title="GSTR-3B Filing Redesign" subtitle="Simplifying GST Filing at Scale" category="B2B · Enterprise UX" date="Jun 2022 – Feb 2024" role="UX Design · Research" team="4 Designers · 1 PM · 3 Devs" color={C} overview="1.4Cr+ businesses file GSTR-3B. I redesigned the experience — 1hr to 8min per GSTIN, tripling adoption." myRole="Led end-to-end UX: 50+ interviews, IA, UI, post-launch iteration. Uncovered the critical adoption flaw through field shadowing." />
-  <CS label="Story" labelColor={C}><p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle }}>A CFO: <em style={{ color: t.text }}>"My team of 6 spends 5 full days every month filing for 120 GSTINs. We make mistakes because the process creates mistakes."</em></p></CS>
-  <Divider />
-  <CS label="Research" labelColor={C} title="50+ Interviews">
-    <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3,1fr)", gap: 14, marginBottom: 28 }}>{[{ n: "50+", l: "Interviews", s: "MSMEs, enterprises, CAs" }, { n: "500+", l: "Tickets Analysed", s: "Pattern identification" }, { n: "3", l: "Usability Tests", s: "GSTN & Clear 1.0" }].map((r, i) => <FadeIn key={i} delay={i * 0.08}><div style={{ padding: 22, background: t.card, border: `1px solid ${t.border}`, textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FD, fontSize: 30, color: C, fontWeight: 700 }}>{r.n}</div><div style={{ fontFamily: FB, fontSize: 13, color: t.text, fontWeight: 600, marginTop: 6 }}>{r.l}</div><div style={{ fontFamily: FB, fontSize: 12, color: t.muted, marginTop: 3 }}>{r.s}</div></div></FadeIn>)}</div>
-    <KF icon="📋" title="Multi-GSTIN Burden" color={C} problem="40-50 hrs/month, one GSTIN at a time." data="78% cited as #1 pain" />
-    <KF icon="📊" title="Excel Dependency" color={C} problem="82% copied from Excel — 25% higher errors." example="Ravi, Tax Consultant: pivot tables for 30 clients." />
-    <KF icon="😰" title="Reconciliation Anxiety" color={C} problem="Feared ITC blocks from vendor errors." data="65% of tickets = ITC mismatches" />
-    <KF icon="❓" title="Table-4 Confusion" color={C} problem="Couldn't map recon to Table-4." data="89% reverted to Excel" />
+  <Hero2 title="Enhancing GSTR-3B Filing for Businesses" subtitle="Simplifying GST Compliance at Scale" category="B2B · Enterprise UX" date="Jun 2022 – Feb 2024" role="UX Design · UI Design · Research" team="4 Product Designers · 1 PM · 3 Developers" color={C} overview="India's GST regime requires over 1.4 crore businesses to file GSTR-3B returns monthly. The GSTN portal and Clear GST 1.0 limited users to one GSTIN at a time — creating massive inefficiencies. I redesigned the end-to-end experience, reducing filing time from 1 hour to under 8 minutes per GSTIN and tripling adoption." myRole="Led end-to-end UX: conducted 50+ user interviews, defined IA, designed all screens, and drove post-launch iteration. Uncovered the critical 'adoption ≠ proficiency' flaw through field shadowing that changed our entire post-launch strategy." />
+
+  <CS label="The Problem" labelColor={C} title="What We Were Up Against">
+    <QB text="My team of 6 spends 5 full days every month filing for 120 GSTINs. We make mistakes because the process creates mistakes." author="CFO, Manufacturing Firm" color={C} />
+    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, margin: "20px 0 16px" }}>Five core challenges drove our design mandate:</p>
+    <PS number={1} title="High Cognitive Load" description="Manual tracking and verification of data across GSTINs increased mental burden exponentially with scale." color={C} />
+    <PS number={2} title="Limited Automation" description="Restrictions on copy-pasting led to manual data entry errors — 82% of users copied from Excel." color={C} />
+    <PS number={3} title="Reconciliation Complexities" description="Matching GSTR-2B with purchase registers was cumbersome, affecting ITC claims — 65% of tickets were ITC mismatches." color={C} />
+    <PS number={4} title="Filing Flow Abandonment" description="Users frequently abandoned the process due to unclear data requirements and a standalone data source step." color={C} />
+    <PS number={5} title="Excel Dependency" description="Users were forced to rely on Excel for filtering, pivot tables, and bulk actions the platform should have provided." color={C} />
   </CS>
   <Divider />
-  <CS label="Design" labelColor={C} title="What I Designed">
-    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 10 }}>Multi-GSTIN Dashboard</h4>
-    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, marginBottom: 8 }}>Centralised status, due dates, batch actions.</p>
-    <Img label="Multi-GSTIN Dashboard" color={C} />
-    <QB text="I need to see which GSTINs are due at a glance." author="Sunita, CFO" color={C} />
-    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 10, marginTop: 28 }}>Reconciliation Engine</h4>
-    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, marginBottom: 8 }}>Split-view GSTR-2B vs PR with bulk approve/reject.</p>
-    <Img label="Reconciliation — split-view" color={C} />
-    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 10, marginTop: 28 }}>Table-4 Live Preview</h4>
-    <DC color={C} title="How to Show Table-4 Impact" context="Users didn't trust auto-generated values." options={[{ text: "Tooltip per cell", chosen: false }, { text: "Side panel with live preview", chosen: true }, { text: "Post-fill summary", chosen: false }]} reasoning="Live side panel shows cause-and-effect as decisions are made. Reduced anxiety from 89% to under 20%." />
+
+  <CS label="Research" labelColor={C} title="50+ Interviews · 500+ Tickets · 3 Usability Tests">
+    <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3,1fr)", gap: 14, marginBottom: 28 }}>{[{ n: "50+", l: "User Interviews", s: "MSMEs, enterprises, CAs" }, { n: "500+", l: "Support Tickets Analysed", s: "Pattern identification" }, { n: "3", l: "Usability Tests", s: "GSTN portal & Clear 1.0" }].map((r, i) => <FadeIn key={i} delay={i * 0.08}><div style={{ padding: 22, background: t.card, border: `1px solid ${t.border}`, textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FD, fontSize: 30, color: C, fontWeight: 700 }}>{r.n}</div><div style={{ fontFamily: FB, fontSize: 13, color: t.text, fontWeight: 600, marginTop: 6 }}>{r.l}</div><div style={{ fontFamily: FB, fontSize: 12, color: t.muted, marginTop: 3 }}>{r.s}</div></div></FadeIn>)}</div>
+    <KF icon="📋" title="Multi-GSTIN Burden" color={C} problem="Businesses spent 40–50 hours monthly on 3B filing, one GSTIN at a time. An FMCG enterprise's finance team dedicated 5 full days/month to file for 120 GSTINs." data="78% of enterprises with 10+ GSTINs cited multi-filing as their #1 pain point" />
+    <KF icon="📊" title="Excel Dependency" color={C} problem="Users needed Excel for reconciliation, filtering, and bulk actions. A tax consultant managing 30 clients relied entirely on pivot tables for data sorting." data="82% of users copied data from Excel to the portal — increasing error rates by 25%" />
+    <KF icon="😰" title="Reconciliation Anxiety" color={C} problem="Users struggled with mismatched ITC claims due to incorrect vendor filings. An MSME owner feared ITC blockages from vendor errors in GSTR-1." data="65% of support tickets were ITC mismatches in Clear GST 1.0" />
+    <KF icon="❓" title="Table-4 Confusion" color={C} problem="Users lacked clarity on ITC claims, ineligible amounts, and reversals. A CA rechecked Table-4 entries 3–4 times before submitting every month." data="89% reverted to Excel, leading to mismatches and CSM escalations" />
   </CS>
   <Divider />
-  <CS label="Accessibility" labelColor={C} title="Designing for India's MSMEs">
-    <PS number={1} title="Keyboard-navigable filing" description="Every step keyboard-accessible — critical for CAs processing dozens of returns." color={C} />
-    <PS number={2} title="High-contrast tax tables" description="WCAG AA for complex numerical data." color={C} />
-    <PS number={3} title="Screen-reader forms" description="Proper labels, fieldsets, ARIA for multi-step flow." color={C} />
-    <PS number={4} title="Multi-cue error states" description="Color + icon + text — never color alone." color={C} />
+
+  <CS label="Design Goals" labelColor={C} title="Five Core Design Mandates">
+    <PS number={1} title="Enable Bulk Filing for Multiple GSTINs" description="Design centralised screens to manage all GSTINs in one place with batch actions — eliminating repetitive work for enterprises." color={C} />
+    <PS number={2} title="Automate Reconciliation Between PR and GSTR-2B" description="Build a pre-filing reconciliation engine with smart suggestions to take ITC actions — minimising manual effort and errors." color={C} />
+    <PS number={3} title="Data Source Flexibility" description="Let users choose datasets (e.g., PR, GSTR-2B) to auto-populate tables, with table-wise mapping and smart defaults." color={C} />
+    <PS number={4} title="Replicate Excel-Like Flexibility In-Platform" description="Introduce filtering, sorting, grouping, and bulk actions natively — eliminating back-and-forth between Excel and the portal." color={C} />
+    <PS number={5} title="Generate Table-4 Directly from 2B vs PR Recon" description="Auto-populate Table-4 based on reconciliation outcomes — simplifying ITC computation and building user confidence." color={C} />
   </CS>
   <Divider />
-  <CS label="The Pivot" labelColor={C} title="When Metrics Lied">
-    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle }}>Post-launch metrics looked great. Then I shadowed real users: CSMs were doing tasks <em style={{ color: t.text }}>for users</em> to hit targets.</p>
-    <QB text="Adoption ≠ Proficiency. Our metrics were a mirage." color="#F55050" />
+
+  <CS label="Information Architecture" labelColor={C} title="6-Step Filing Workflow">
+    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, marginBottom: 24 }}>I designed the IA with a clear focus on the objective of each page — balancing compliance requirements with user efficiency.</p>
+    {[
+      { step: "1", label: "GST Landing Page", items: ["GSTR-3B Filing", "Other Filings (GSTR-1, 6, 8, 9, 9C, ITC-04)"] },
+      { step: "2", label: "Pre-Preparation — Data Source Setup", items: ["Select Business Unit (PAN or GSTINs)", "Select Return Period", "Activate GSTN Connection for All GSTINs", "Confirm & Review Data Sources"] },
+      { step: "3", label: "Data Preparation (Step 1/4)", items: ["GSTIN Activation to Download Latest GSTN Data", "Import Latest PR & SR Data", "Check Availability of Sales & Purchase Data", "Run 2B vs PR Reconciliation for ITC (Table-4)"] },
+      { step: "4", label: "Review Tax Calculation & Offset (Step 2/4)", items: ["Review Detailed Tax Calculation", "Review Summary of Liabilities", "Tax Calculator (Government vs. Clear GST)", "Apply Rule 86B if applicable", "Create Challans"] },
+      { step: "5", label: "Upload to GSTN (Step 3/4)", items: ["Upload Data to GSTN", "Post Credit to Ledger", "Multi-Challan Creation for 100+ GSTINs"] },
+      { step: "6", label: "Filing & Status Review (Step 4/4)", items: ["Review Upload Status & Tax Payable", "Select Filing Method (EVC / DSC)", "Unified Status Dashboard across GSTINs"] },
+    ].map((s, i) => <FadeIn key={i} delay={i * 0.06}><div style={{ display: "flex", gap: 20, marginBottom: 20 }}><div style={{ minWidth: 36, height: 36, borderRadius: "50%", border: `2px solid ${C}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FD, fontSize: 15, color: C, fontWeight: 600, flexShrink: 0 }}>{s.step}</div><div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 4, padding: "16px 20px", flex: 1 }}><div style={{ fontFamily: FB, fontSize: 14, color: t.text, fontWeight: 600, marginBottom: 8 }}>{s.label}</div>{s.items.map((item, j) => <div key={j} style={{ fontFamily: FB, fontSize: 13, color: t.subtle, lineHeight: 1.7 }}>· {item}</div>)}</div></div></FadeIn>)}
+  </CS>
+  <Divider />
+
+  <CS label="Design Solutions" labelColor={C} title="What I Built">
+    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8 }}>A. Data Source Selection Interface</h4>
+    <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 16 }}>Table-specific mapping with dropdown menus (e.g., "Table-4: GSTR-2B + PR"), smart auto-suggested defaults for SMEs, and a preview mode to validate auto-filled values before proceeding.</p>
+    <Img label="Data Source Selection — table-wise mapping with smart defaults" color={C} />
+    <Divider />
+    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8, marginTop: 28 }}>B. Multi-GSTIN Filing Dashboard</h4>
+    <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 16 }}>Centralised status overview tracking pending filings, tax liabilities, and ITC statuses. Batch filing for 10+ GSTINs in one click. Enterprises activated 20+ GSTINs in under 10 minutes.</p>
+    <QB text="I need to see which GSTINs are due at a glance." author="Sunita, CFO — Manufacturing Firm" color={C} />
+    <Img label="Multi-GSTIN Dashboard — batch filing and status overview" color={C} />
+    <Divider />
+    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8, marginTop: 28 }}>C. Pre-Filing Reconciliation Engine</h4>
+    <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 16 }}>Split-view comparison of GSTR-2B vs Purchase Register with mismatches highlighted. Bulk approve/reject for 100+ invoices in one click. Vendor grouping and partial invoice matching added post-launch.</p>
+    <Img label="Reconciliation Engine — split-view with live Table-4 impact" color={C} />
+    <Divider />
+    <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8, marginTop: 28 }}>D. Table-4 Live Preview</h4>
+    <DC color={C} title="How to Surface Table-4 Impact" context="Users didn't trust auto-generated values and couldn't see how reconciliation decisions affected their ITC computations." options={[{ text: "Tooltip per cell", chosen: false }, { text: "Side panel with live preview as decisions are made", chosen: true }, { text: "Post-fill summary only", chosen: false }]} reasoning="Live side panel shows cause-and-effect in real time. Each reconciliation action immediately updates Table-4 — turning a black box into a transparent, trustworthy system." />
+  </CS>
+  <Divider />
+
+  <CS label="Accessibility" labelColor={C} title="Designing for India's Diverse MSMEs">
+    <PS number={1} title="Keyboard-Navigable Filing" description="Every step keyboard-accessible — critical for CAs processing dozens of returns daily without leaving the keyboard." color={C} />
+    <PS number={2} title="High-Contrast Tax Tables" description="WCAG AA for complex numerical data — ensuring readability for users in variable lighting conditions across India." color={C} />
+    <PS number={3} title="Screen-Reader Forms" description="Proper labels, fieldsets, and ARIA attributes for the multi-step filing flow." color={C} />
+    <PS number={4} title="Multi-Cue Error States" description="Color + icon + text — never color alone. Ensures error clarity for users with colour vision deficiencies." color={C} />
+  </CS>
+  <Divider />
+
+  <CS label="Post-Launch · The 90-90-90 Drive" labelColor={C} title="When Good Metrics Lied">
+    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle }}>Post-launch, we initiated a customer adoption drive where CSMs were incentivised to ensure users adopted critical features and filed GSTR-3B independently. Monthly retros revealed a critical flaw.</p>
+    <QB text="Adoption ≠ Proficiency. CSMs were doing tasks for users to hit targets. Users were filing but not mastering the platform." color="#F55050" />
+    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, margin: "16px 0" }}>We shifted from CSM-led metrics to direct user shadowing — asking open-ended questions like <em style={{ color: t.text }}>"How would you solve this without the platform?"</em></p>
     <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 14, margin: "24px 0" }}>
-      {[{ n: "47%", l: "Data Source abandonment" }, { n: "89%", l: "Recon → Table-4 drop" }].map((x, i) => <FadeIn key={i} delay={i * 0.1}><div style={{ padding: 22, background: "rgba(245,80,80,0.04)", border: "1px solid rgba(245,80,80,0.1)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FD, fontSize: 34, color: "#F55050", fontWeight: 700 }}>{x.n}</div><div style={{ fontFamily: FB, fontSize: 13, color: t.muted, marginTop: 5 }}>{x.l}</div></div></FadeIn>)}
+      {[{ n: "47%", l: "Drop-off at Data Source step" }, { n: "89%", l: "Recon → Table-4 abandonment" }].map((x, i) => <FadeIn key={i} delay={i * 0.1}><div style={{ padding: 22, background: "rgba(245,80,80,0.04)", border: "1px solid rgba(245,80,80,0.1)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FD, fontSize: 34, color: "#F55050", fontWeight: 700 }}>{x.n}</div><div style={{ fontFamily: FB, fontSize: 13, color: t.muted, marginTop: 5 }}>{x.l}</div></div></FadeIn>)}
     </div>
+    <KF icon="🚧" title="Data Source Page as a Barrier" color="#F55050" problem="Users saw the standalone data source setup as a gatekeeper step, not a workflow enabler. Why can I not adjust sources directly in the GSTR-3B form? — MSME Owner" data="47% dropped off or called CSMs to bypass this step" />
+    <KF icon="🔲" title="Table-4 Opaqueness" color="#F55050" problem="I download the recon to Excel, create pivot tables, and cross-check. Your platform logic is a black box. — Tax Consultant. Users needed to see how each reconciliation action impacted Table-4." data="89% reverted to Excel — mismatches and CSM escalations followed" />
+    <KF icon="📑" title="Excel Dependency Persisted" color="#F55050" problem="Lack of native filtering, grouping, and bulk actions forced users to download data even after launch." />
   </CS>
   <Divider />
+
   <CS label="Iterations" labelColor={C} title="How I Fixed It">
-    <PS number={1} title="Killed standalone Data Source" description="Moved inline. Drop-off: 47% → near-zero." color={C} />
-    <BA beforeLabel="Standalone page (47% abandoned)" afterLabel="Inline controls" />
-    <PS number={2} title="Table-4 live previews" description="Real-time impact per reconciliation decision." color={C} />
-    <PS number={3} title="In-platform grouping" description="Replaced Excel pivot tables natively." color={C} />
-    <PS number={4} title="Multi-GSTIN auto OTP" description="30 min → 2 min." color={C} />
+    <PS number={1} title="Data Source: Contextual Integration" description="Moved data source configuration inside the GSTR-3B form itself. Users could now adjust sources while reviewing Table-4 — eliminating the standalone 'gatekeeper' step. Drop-off: 47% → near-zero." color={C} />
+    <BA beforeLabel="Standalone data source page (47% abandoned)" afterLabel="Inline source controls inside filing form" />
+    <PS number={2} title="Transparent Table-4 Workflow" description="Introduced real-time Table-4 impact previews in the reconciliation table. Each row shows live impact on ITC — turning a black box into a transparent flow users could trust." color={C} />
+    <Img label="Table-4 live preview — reconciliation drives real-time ITC updates" color={C} />
+    <PS number={3} title="Excel-Free In-Platform Grouping" description="Introduced grouping and subgrouping capabilities to enable efficient bulk actions — replacing the need for Excel pivot tables natively." color={C} />
+    <PS number={4} title="Multi-GSTIN Auto OTP Capture" description="Streamlined the upload process with automated OTP capture for multiple GSTINs (with user consent). Filing time: 30 min → 2 min per GSTIN batch." color={C} />
     <QB text="Finally, I can adjust sources right where I need them!" author="Deepak, MSME Owner" color={C} />
-    <QB text="Live previews made Table-4 less of a mystery." author="Meera, Tax Consultant" color={C} />
+    <QB text="The live previews made Table-4 feel less like a mystery." author="Meera, Tax Consultant" color={C} />
   </CS>
   <Divider />
-  <CS label="Impact" labelColor={C}>
+
+  <CS label="Impact" labelColor={C} title="Results Across Three Phases">
     <div style={{ display: "grid", gridTemplateColumns: m ? "repeat(2,1fr)" : "repeat(4,1fr)", gap: 14, marginBottom: 32 }}>
-      <MC metric="87%" label="Time cut" color={C} /><MC metric="53%" label="Adoption ↑" color={C} /><MC metric="94%" label="Accuracy" color={C} /><MC metric="73%" label="Escalation ↓" color={C} />
+      <MC metric="87%" label="Filing time ↓" color={C} /><MC metric="53%" label="3B Adoption" color={C} /><MC metric="94%" label="Recon Accuracy" color={C} /><MC metric="73%" label="Escalations ↓" color={C} />
     </div>
-    <CT headers={["Metric", "Before", "After", "Impact"]} rows={[["3B Adoption", "18%", "53%", "3x"], ["Speed/GSTIN", "1 hour", "<8 min", "87% ↓"], ["Accuracy", "80%", "94%", "+14%"], ["Escalations/Wk", "92", "25", "-73%"], ["Revenue", "₹60cr", "₹108cr", "+₹48cr"], ["Automation", "10%", "60%", "6x"]]} />
+    <CT headers={["Metric", "Clear GST 1.0", "2.0 Launch", "2.0 Post-Launch", "Impact"]} rows={[
+      ["GST Adoption", "12%", "45%", "51%", "Significant adoption increase"],
+      ["Revenue", "₹60cr", "₹100cr", "₹108cr", "Revenue growth across Clear GST"],
+      ["GSTR-3B Adoption", "18%", "42%", "53%", "3B filing adoption tripled"],
+      ["CSM Tickets/Customer/Mo", "2.7", "2.4", "1.8", "33% reduction in support load"],
+      ["Speed per GSTIN", "1 hour", "<10 min", "<8 min", "87% filing time reduction"],
+      ["Avg GSTINs per Customer", "4–5", "12–15", "12–15", "3x capacity increase"],
+      ["Reconciliation Accuracy", "80%", "80–92%", "94%", "UX bucketing drove +14% accuracy"],
+      ["Automation", "10%", "30%", "60%", "6x automation increase"],
+      ["Table-4 Automation", "Manual", "20%", "33%", "Growing automated reconciliation"],
+      ["CSM Escalations/Week", "92", "80", "25", "−73% escalation reduction"],
+    ]} />
   </CS>
   <Divider />
-  <CS label="Reflection" labelColor={C}><PS number={1} title="Adoption ≠ Proficiency" description="Field shadowing revealed what dashboards couldn't." color={C} /><PS number={2} title="Context > Isolation" description="Inline config = small change, massive impact." color={C} /><PS number={3} title="Transparency Builds Trust" description="Live previews transformed anxiety into confidence." color={C} /></CS>
+
+  <CS label="Reflection" labelColor={C}>
+    <PS number={1} title="Adoption ≠ Proficiency" description="Incentivising usage without ensuring understanding backfires. Field shadowing revealed what dashboards couldn't — users were filing but not mastering." color={C} />
+    <PS number={2} title="Context > Isolation" description="Integrating data source configuration inline was a small structural change with massive UX impact. The context of the task matters more than the feature itself." color={C} />
+    <PS number={3} title="Transparency Builds Trust" description="Users need to see how their actions impact outcomes. Live Table-4 previews transformed anxiety into confidence — and drove adoption where mandates couldn't." color={C} />
+  </CS>
   <Bk onClick={goBack} />
 </Wrap>); }
 
 /* ═══ MINT V8 — FULL DEPTH ═══ */
 function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m = useIsMobile(); useEffect(() => { window.scrollTo(0, 0); }, []); return (<Wrap>
-  <Hero2 title="Mint V8 Design System" subtitle="Token-Based System with PCS Logic" category="Design System" date="2023" role="Design System Lead" team="1 Dev · 4 Designers · Manager" color={C} overview="Clear had 3 design systems, 700+ button variants, engineers hardcoding UI. I led Mint V8, inventing PCS Logic for 80% variant reduction." myRole="Sole lead. Token architecture, PCS invention, Figma library, docs, workshops, code parity." />
-  <CS label="Turning Point" labelColor={C}><p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle }}>Asked to design a date picker. Found 4 button styles, 3 palettes, zero docs. 5 designers, 5 answers.</p><QB text="I don't trust the Figma components. I just hardcode CSS." author="Amit, Frontend Engineer" color={C} /><Img label="Fragmented Figma before Mint V8" color={C} /></CS>
-  <Divider />
-  <CS label="Phase 1" labelColor={C} title="Tokens First"><DC color={C} title="Token-First vs Component-First" context="Quick wins or 3-4 weeks on foundation?" options={[{ text: "Components first", chosen: false }, { text: "Tokens first — components inherit theming", chosen: true }]} reasoning="'Paint the walls now, or fix the plumbing first.' 3-week delay approved." /></CS>
-  <Divider />
-  <CS label="Phase 2" labelColor={C} title="Token Architecture"><p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 24 }}>Three tiers: reference → system → component. Same component, different themes via token swap.</p><CT headers={["Role", "Token", "Hex"]} rows={[["Primary", "sys.color.primary", "#156CEF"], ["On Primary", "sys.color.on-primary", "#FFFFFF"], ["Container", "sys.color.primary-container", "#EFF8FF"]]} /><Img label="Token hierarchy diagram" color={C} /></CS>
-  <Divider />
-  <CS label="Breakthrough" labelColor={C} title="Inventing PCS"><p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle }}>760+ button variants. Whiteboard session revealed: <strong style={{ color: C }}>every component = Prefix + Content + Suffix.</strong></p><Img label="Whiteboard: PCS discovery" color={C} aspect="4/3" /><DC color={C} title="PCS Granularity" context="Open, constrained, or fixed slots?" options={[{ text: "Fully open", chosen: false }, { text: "Constrained per component", chosen: true }, { text: "Fixed", chosen: false }]} reasoning="Constrained = flexibility within guardrails. Buttons: prefix=icons, content=text, suffix=icons/counters." />
-    <FadeIn><div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3,1fr)", gap: 14, marginTop: 24 }}>{[{ c: "Buttons", b: "760", a: "32" }, { c: "Badges", b: "624", a: "25" }, { c: "Inputs", b: "113", a: "40" }].map((v, i) => <div key={i} style={{ padding: 22, background: t.card, border: `1px solid ${t.border}`, textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 14, color: t.text, fontWeight: 600, marginBottom: 14 }}>{v.c}</div><div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}><span style={{ fontFamily: FD, fontSize: 22, color: t.muted, textDecoration: "line-through" }}>{v.b}</span><span style={{ color: C }}>→</span><span style={{ fontFamily: FD, fontSize: 30, color: C, fontWeight: 700 }}>{v.a}</span></div></div>)}</div></FadeIn>
-    <BA beforeLabel="760 button variants" afterLabel="32 via PCS" />
-    <QB text="PCS saved us weeks in component rebuilding." author="Neha, Product Designer" color={C} />
+  <Hero2 title="Mint V8 Design System" subtitle="Token-Based, Theme-Ready System with PCS Logic" category="Design System" date="Mar 2023" role="Design System Lead" team="1 Frontend Dev · 4 Product Designers · Design Manager" color={C} overview="At Clear, we faced a growing design crisis: fragmented systems across Finance Cloud and Supply Chain Cloud, engineers hardcoding UI because they couldn't trust Figma, and 700+ button variants with zero docs. I led Mint V8 from scratch — inventing PCS Logic that reduced component variants by over 80% and achieved 100% team adoption in 6 weeks." myRole="Led the entire initiative from ideation to implementation. Conducted research on token systems and atomic design, created the foundational token structure, designed core components, authored PCS logic, collaborated with developers to align system in Figma and code, and trained cross-functional teams." />
+
+  <CS label="The Challenge" labelColor={C} title="Five Reasons We Needed to Start Over">
+    <PS number={1} title="Fragmented Systems" description="Products under Clear Finance Cloud and Supply Chain Cloud lacked a consistent UI — some used outdated Basil, others a barebones Mint library with no shared logic." color={C} />
+    <PS number={2} title="Engineers Hardcoding UI" description="Without a reliable system, engineers frequently hardcoded visual decisions — diverging further from design intent with every sprint." color={C} />
+    <PS number={3} title="Impossible Theming" description="Regional theming for global expansion was impossible without duplicating components entirely. Each new theme meant multiplying the maintenance burden." color={C} />
+    <PS number={4} title="Component Variant Explosion" description="Buttons alone had 760+ variants. Badges: 624+. Inputs: 113+. Maintenance was a nightmare and no designer could keep up." color={C} />
+    <PS number={5} title="Zero Documentation" description="5 designers, 5 different answers to the same question. There was no single source of truth — design decisions were tribal knowledge." color={C} />
+    <QB text="I don't trust the Figma components. I just hardcode CSS." author="Amit, Frontend Engineer" color={C} />
   </CS>
   <Divider />
-  <CS label="Governance" labelColor={C} title="Driving Adoption">
-    <PS number={1} title="Weekly PCS Workshops" description="45 min Thursdays. 4 weeks → all self-sufficient." color={C} />
-    <PS number={2} title="Figma Playground" description="Shared experimentation with inline feedback." color={C} />
-    <PS number={3} title="Token Sync" description="Figma → JSON → CSS variables pipeline." color={C} />
-    <PS number={4} title="Gradual Deprecation" description="2-3 screens/sprint. Week 4: voluntary migrations." color={C} />
-    <DC color={C} title="Hard Cutover vs Gradual" context="Manager wanted immediate deprecation." options={[{ text: "Hard cutover", chosen: false }, { text: "Gradual — prove per sprint", chosen: true }]} reasoning="Gradual migration builds confidence. Each sprint proved value." />
+
+  <CS label="Phase 1 · Foundation" labelColor={C} title="Tokens Before Everything">
+    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 20 }}>I had never led a full design system build. I started by studying Material Design, Carbon, and atomic design principles. One insight stood out: <strong style={{ color: t.text }}>everything scalable starts with a token system.</strong> Tokens abstract the complexity of visual attributes into manageable, code-friendly constants.</p>
+    <DC color={C} title="Token-First vs Component-First" context="The team wanted quick wins — ship some components now. But without tokens, we'd be painting over the same cracks." options={[{ text: "Components first — faster visible progress", chosen: false }, { text: "Tokens first — components inherit theming automatically", chosen: true }]} reasoning="'Paint the walls now, or fix the plumbing first.' A 3-week token foundation was approved. Every component built after would be theme-ready by default." />
+    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, margin: "20px 0 12px" }}>We structured tokens into four categories:</p>
+    <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(2,1fr)", gap: 14, marginBottom: 24 }}>{[
+      { icon: "Aa", title: "Typography Tokens", desc: "Type scale, font weights, line heights, letter spacing — semantically named by usage context (Display L, Body M, Label S, etc.)" },
+      { icon: "⬜", title: "Spacing Tokens", desc: "Base-4 scale: 4px, 8px, 16px, 24px... Tokenised as S0–S10. Kept spacing consistent across all surfaces." },
+      { icon: "🎨", title: "Colour Tokens", desc: "Functional names (primary, on-primary, container) not appearance names (blue, grey). Tokens mapped to different values per theme." },
+      { icon: "◻", title: "Radius, Elevation & Shadows", desc: "Standardised corner radii (radius/sm, radius/md) and elevation levels — unifying UI depth and shape across products." },
+    ].map((item, i) => <FadeIn key={i} delay={i * 0.08}><div style={{ padding: 22, background: t.card, border: `1px solid ${t.border}`, borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 20, marginBottom: 10 }}>{item.icon}</div><div style={{ fontFamily: FB, fontSize: 14, color: t.text, fontWeight: 600, marginBottom: 6 }}>{item.title}</div><p style={{ fontFamily: FB, fontSize: 13, lineHeight: 1.7, color: t.subtle, margin: 0 }}>{item.desc}</p></div></FadeIn>)}</div>
+    <CT headers={["Role", "System Token", "Reference Token", "Raw Value"]} rows={[
+      ["Primary", "mint.cfc.sys.color.primary", "mint.cfc.ref.color.blue-600", "#156CEF"],
+      ["On Primary", "mint.cfc.sys.color.on-primary", "mint.cfc.ref.color.base-white", "#FFFFFF"],
+      ["Primary Container", "mint.cfc.sys.color.primary-container", "mint.cfc.ref.color.blue-50", "#EFF8FF"],
+    ]} />
+  </CS>
+  <Divider />
+
+  <CS label="Phase 2 · Components" labelColor={C} title="Atomic Design — Atoms to Organisms">
+    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 20 }}>We followed an atomic design approach to structure the system into three logical layers. This ensured we never rebuilt the wheel — every molecule and organism used the same atomic base.</p>
+    <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3,1fr)", gap: 14, marginBottom: 24 }}>{[
+      { label: "Atoms", desc: "Tokens, Icons, Typography, Colors — the foundational pieces", color: `${C}20`, border: `${C}30` },
+      { label: "Molecules", desc: "Buttons, Input fields, Dropdowns — interactive components made of atoms", color: `${C}12`, border: `${C}20` },
+      { label: "Organisms", desc: "Forms, Modals, Toolbars, Tables — complex structures composed of molecules", color: `${C}06`, border: `${C}15` },
+    ].map((a, i) => <FadeIn key={i} delay={i * 0.1}><div style={{ padding: 22, background: a.color, border: `1px solid ${a.border}`, borderRadius: 4, textAlign: "center" }}><div style={{ fontFamily: FD, fontSize: 20, color: C, fontWeight: 600, marginBottom: 8 }}>{a.label}</div><p style={{ fontFamily: FB, fontSize: 13, lineHeight: 1.6, color: t.subtle, margin: 0 }}>{a.desc}</p></div></FadeIn>)}</div>
+    <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle }}>We also noticed a visual imbalance when icons appeared too bold or light compared to text. We created <strong style={{ color: t.text }}>dynamic icon sets</strong> — each icon in multiple visual weights (body, label) — so designers could switch based on component prominence. This brought significant improvement to visual rhythm and hierarchy.</p>
+  </CS>
+  <Divider />
+
+  <CS label="Breakthrough" labelColor={C} title="Discovering PCS Logic">
+    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 20 }}>As we built molecules, we hit a wall — component bloat. 760+ button variants. Engineers still hardcoding. Then a whiteboard session revealed a powerful pattern: <strong style={{ color: C }}>nearly every component = Prefix + Content + Suffix.</strong></p>
+    <Img label="Whiteboard: PCS discovery — the universal component shell" color={C} aspect="4/3" />
+    <DC color={C} title="PCS Slot Granularity" context="How constrained should each P, C, S slot be? Open means anything goes, fixed means no flexibility." options={[{ text: "Fully open slots", chosen: false }, { text: "Constrained per component type", chosen: true }, { text: "Fixed — locked to one pattern", chosen: false }]} reasoning="Constrained slots = flexibility within guardrails. Buttons: prefix=icons only, content=text, suffix=icons/counters. This prevented misuse while enabling every real-world variant." />
+    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, margin: "20px 0 12px" }}>The impact was immediate — we rebuilt components using PCS logic and slashed variant counts:</p>
+    <FadeIn><div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3,1fr)", gap: 14, marginBottom: 24 }}>{[{ c: "Buttons", b: "760", a: "32" }, { c: "Badges", b: "624", a: "25" }, { c: "Inputs", b: "113", a: "40" }].map((v, i) => <div key={i} style={{ padding: 22, background: t.card, border: `1px solid ${t.border}`, textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 14, color: t.text, fontWeight: 600, marginBottom: 14 }}>{v.c}</div><div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}><span style={{ fontFamily: FD, fontSize: 22, color: t.muted, textDecoration: "line-through" }}>{v.b}</span><span style={{ color: C, fontWeight: 700 }}>→</span><span style={{ fontFamily: FD, fontSize: 30, color: C, fontWeight: 700 }}>{v.a}</span></div></div>)}</div></FadeIn>
+    <BA beforeLabel="760 button variants — maintenance nightmare" afterLabel="32 via PCS — every variant covered" />
+    <QB text="The PCS logic literally saved us weeks in component rebuilding." author="Product Designer, Mint V8 team" color={C} />
+  </CS>
+  <Divider />
+
+  <CS label="Theming" labelColor={C} title="Two Themes, Zero Component Duplication">
+    <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 20 }}>We created two core themes — one for Clear Finance Cloud (CFC) and one for Clear Supply Chain (CSC). They differed only in primary colour shades. Thanks to token-first architecture, this required no component changes — just token value swaps.</p>
+    <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 14, marginBottom: 20 }}>
+      <FadeIn><div style={{ padding: 28, background: "rgba(21,108,239,0.08)", border: "1px solid rgba(21,108,239,0.2)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 11, color: BLUE, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: 8 }}>Clear Finance Cloud</div><div style={{ fontFamily: FD, fontSize: 24, color: BLUE, marginBottom: 6 }}>Blue 600</div><div style={{ fontFamily: FB, fontSize: 12, color: t.muted }}>mint.cfc.sys.color.primary → #156CEF</div></div></FadeIn>
+      <FadeIn delay={0.1}><div style={{ padding: 28, background: "rgba(147,51,234,0.08)", border: "1px solid rgba(147,51,234,0.2)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 11, color: "#9333EA", fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: 8 }}>Clear Supply Chain</div><div style={{ fontFamily: FD, fontSize: 24, color: "#9333EA", marginBottom: 6 }}>Purple 600</div><div style={{ fontFamily: FB, fontSize: 12, color: t.muted }}>mint.csc.sys.color.primary → #9333EA</div></div></FadeIn>
+    </div>
+    <Img label="Theme switching demo — CFC → CSC with zero component changes" color={C} />
+  </CS>
+  <Divider />
+
+  <CS label="Adoption" labelColor={C} title="Bridging Designers and Engineers">
+    <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, marginBottom: 20 }}>We didn't have a dedicated design systems engineering team. So I built adoption as a design problem, not a mandate.</p>
+    <PS number={1} title="Weekly PCS Workshops" description="45-min sessions every Thursday. After 4 weeks, all designers were self-sufficient. Engineers attended too — they started contributing to the system." color={C} />
+    <PS number={2} title="Figma Playground" description="A shared experimentation space with interactive PCS components. Designers could explore variants inline with live feedback." color={C} />
+    <PS number={3} title="Token Sync Pipeline" description="Tokens documented in Figma, exported to JSON, implemented by devs as CSS variables. Planned: Style Dictionary → automated Storybook integration." color={C} />
+    <PS number={4} title="Gradual Deprecation" description="2–3 screens per sprint migrated to Mint V8. By week 4, teams were voluntarily migrating their own screens without being asked." color={C} />
+    <DC color={C} title="Hard Cutover vs Gradual Migration" context="The Design Manager wanted immediate system-wide deprecation of old components. I pushed back." options={[{ text: "Hard cutover — deprecate everything immediately", chosen: false }, { text: "Gradual — prove value per sprint, earn voluntary adoption", chosen: true }]} reasoning="Mandates create resistance. Each sprint that proved PCS logic's value converted skeptics into advocates. By week 6, adoption was 100% — because the team chose it." />
     <QB text="I was skeptical. Once I built with PCS, I couldn't go back." author="Vikram, Sr. Product Designer" color={C} />
+    <QB text="Naming conventions and spacing rules made it so much easier to code with confidence." author="Frontend Engineer, Clear" color={C} />
   </CS>
   <Divider />
-  <CS label="Theming" labelColor={C} title="Two Themes, Zero Duplication">
-    <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 14, marginTop: 20 }}>
-      <FadeIn><div style={{ padding: 24, background: "rgba(21,108,239,0.08)", border: "1px solid rgba(21,108,239,0.18)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 12, color: BLUE, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: 6 }}>CFC</div><div style={{ fontFamily: FD, fontSize: 22, color: BLUE }}>Blue 600</div></div></FadeIn>
-      <FadeIn delay={0.1}><div style={{ padding: 24, background: "rgba(147,51,234,0.08)", border: "1px solid rgba(147,51,234,0.18)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 12, color: "#9333EA", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: 6 }}>CSC</div><div style={{ fontFamily: FD, fontSize: 22, color: "#9333EA" }}>Purple 600</div></div></FadeIn>
+
+  <CS label="Impact" labelColor={C} title="Results That Spoke for Themselves">
+    <div style={{ display: "grid", gridTemplateColumns: m ? "repeat(2,1fr)" : "repeat(4,1fr)", gap: 14, marginBottom: 32 }}>
+      <MC metric="80%" label="Variant ↓" color={C} /><MC metric="70%" label="Dev effort ↓" color={C} /><MC metric="100%" label="Adoption in 6 wks" color={C} /><MC metric="2" label="Themes, 0 duplication" color={C} />
     </div>
+    <CT headers={["Challenge", "Solution", "Outcome"]} rows={[
+      ["Fragmented design language", "Mint V8 with token-based atomic architecture", "Unified experience across all product suites"],
+      ["Hardcoded UI components", "Design tokens (typography, spacing, colour, elevation)", "Consistent patterns + seamless Figma-to-code mapping"],
+      ["Impossible theming for global expansion", "Token values mapped per theme (CFC, CSC)", "Brand customisation without touching component logic"],
+      ["700+ component variants", "PCS Logic (Prefix, Content, Suffix)", "80% variant reduction — improved design and dev velocity"],
+      ["Poor design-engineering collaboration", "Workshops + Figma playground + token documentation", "Engineers contributing to the system; 70% less dev effort"],
+      ["Inconsistent icon visual weight", "Dynamic icons in multiple contextual weights", "Improved visual rhythm and readability across all interfaces"],
+    ]} />
   </CS>
   <Divider />
-  <CS label="Impact" labelColor={C}>
-    <div style={{ display: "grid", gridTemplateColumns: m ? "repeat(2,1fr)" : "repeat(4,1fr)", gap: 14, marginBottom: 28 }}>
-      <MC metric="80%" label="Maintenance ↓" color={C} /><MC metric="70%" label="Dev effort ↓" color={C} /><MC metric="2" label="Themes" color={C} /><MC metric="32" label="Buttons" color={C} />
-    </div>
-    <CT headers={["Criteria", "Before", "After"]} rows={[["Consistency", "Fragmented", "Unified via tokens"], ["Theming", "Hardcoded", "Token swap"], ["Variants", "700+", "~30 PCS"], ["Handoff", "Screenshots", "JSON export"], ["Adoption", "~30%", "100% in 6 wks"]]} />
+
+  <CS label="Looking Ahead" labelColor={C}>
+    <PS number={1} title="Pattern Standardisation Across UX" description="Auditing and standardising all recurring interaction patterns — error handling, feedback messages, file imports, confirmation flows, and empty states — with consistent UX behaviours and micro-interactions." color={C} />
+    <PS number={2} title="Developer Documentation Portal" description="Building a robust Storybook documentation portal as a single source of truth for developers, PMs, and designers." color={C} />
+    <PS number={3} title="Motion & Interaction Tokens" description="Adding tokens for micro-interactions, animations, and transition timings to ensure consistency in motion design throughout the platform." color={C} />
+    <PS number={4} title="Automated Token Pipeline" description="Style Dictionary for token export to JSON, CSS, SCSS, and JS. Figma plugins for PCS toggling. GitHub automation for token updates." color={C} />
   </CS>
   <Divider />
-  <CS label="Reflection" labelColor={C}><PS number={1} title="Tokens first, always" description="Everything flows from tokens." color={C} /><PS number={2} title="Structure > Style" description="PCS abstracts structure, not just visuals." color={C} /><PS number={3} title="Adoption = design problem" description="Workshops > mandates." color={C} /></CS>
+
+  <CS label="Reflection" labelColor={C}>
+    <QB text="Design systems aren't about one perfect UI kit. They're about building a foundation that scales, adapts, and empowers everyone involved." color={C} />
+    <PS number={1} title="Tokens First, Always" description="Everything scalable flows from a token system. Components built without tokens are houses built without foundations." color={C} />
+    <PS number={2} title="Structure > Style" description="PCS abstracts structure, not just visuals. It's a thinking model as much as a design pattern — and that's what made it transferable to engineers." color={C} />
+    <PS number={3} title="Adoption Is a Design Problem" description="Workshops and playgrounds beat mandates every time. Make the new system easier to use than the old one — and the team will choose it themselves." color={C} />
+  </CS>
   <Bk onClick={goBack} />
 </Wrap>); }
 
