@@ -64,10 +64,15 @@ function ThemeToggle() {
 }
 
 /* ═══ NAV ═══ */
-function Nav({ activeSection, currentPage, goBack, goHome }) {
+function Nav({ activeSection, currentPage, goBack, goHome, goTo }) {
   const { t } = useTheme(); const links = ["About", "Work", "Experience", "Skills", "Contact"]; const m = useIsMobile();
   const [drawer, setDrawer] = useState(false);
   const jump = (id) => { scrollTo(id); setDrawer(false); };
+  const caseStudies = [
+    { id: "zzazz", label: "ZZAZZ Terminal", color: AMBER },
+    { id: "gstr-3b", label: "GSTR-3B Filing", color: GREEN },
+    { id: "mint-v8", label: "Mint V8 Design System", color: BLUE },
+  ];
   return (<>
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: m ? "10px 20px" : "12px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", backdropFilter: "blur(20px)", background: t.navBg, borderBottom: `1px solid ${t.border}` }}>
       <div style={{ display: "flex", alignItems: "center", gap: m ? 10 : 18 }}>
@@ -97,10 +102,23 @@ function Nav({ activeSection, currentPage, goBack, goHome }) {
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 0, marginTop: 8 }}>
         {links.map(l => (
-          <button key={l} onClick={() => jump(l.toLowerCase())} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "18px 0", borderBottom: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontFamily: FB, fontSize: 15, color: activeSection === l.toLowerCase() ? t.accent : t.text, fontWeight: activeSection === l.toLowerCase() ? 600 : 400, letterSpacing: "0.5px", transition: "color 0.2s" }}>{l}</span>
-            {activeSection === l.toLowerCase() && <div style={{ width: 6, height: 6, borderRadius: "50%", background: t.accent }} />}
-          </button>
+          <React.Fragment key={l}>
+            <button onClick={() => jump(l.toLowerCase())} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "18px 0", borderBottom: l === "Work" ? "none" : `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ fontFamily: FB, fontSize: 15, color: activeSection === l.toLowerCase() ? t.accent : t.text, fontWeight: activeSection === l.toLowerCase() ? 600 : 400, letterSpacing: "0.5px", transition: "color 0.2s" }}>{l}</span>
+              {activeSection === l.toLowerCase() && <div style={{ width: 6, height: 6, borderRadius: "50%", background: t.accent }} />}
+            </button>
+            {l === "Work" && (
+              <div style={{ paddingLeft: 12, paddingBottom: 12, borderBottom: `1px solid ${t.border}` }}>
+                <div style={{ fontFamily: FB, fontSize: 10, letterSpacing: "2px", textTransform: "uppercase", color: t.muted, marginBottom: 6, opacity: 0.7 }}>Case Studies</div>
+                {caseStudies.map(cs => (
+                  <button key={cs.id} onClick={() => { goTo && goTo(cs.id); setDrawer(false); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "9px 0", display: "flex", alignItems: "center", gap: 10, width: "100%" }}>
+                    <div style={{ width: 5, height: 5, borderRadius: "50%", background: cs.color, flexShrink: 0 }} />
+                    <span style={{ fontFamily: FB, fontSize: 13, color: t.subtle, letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = cs.color} onMouseLeave={e => e.currentTarget.style.color = t.subtle}>{cs.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </React.Fragment>
         ))}
       </div>
       <div style={{ marginTop: "auto", paddingBottom: 32, paddingTop: 20, borderTop: `1px solid ${t.border}` }}>
@@ -451,7 +469,7 @@ function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m 
 </Wrap>); }
 
 /* ═══ HOME ═══ */
-function HomePage({ onOpen }) { const { t } = useTheme(); const [as, setAs] = useState("about"); const m = useIsMobile(); useEffect(() => { const h = () => { for (const id of ["contact", "skills", "experience", "work", "about"]) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 300) { setAs(id); break; } } }; window.addEventListener("scroll", h); return () => window.removeEventListener("scroll", h); }, []); return (<><Nav activeSection={as} currentPage="home" goHome={() => window.scrollTo({ top: 0, behavior: "smooth" })} /><Hero /><section id="work" style={{ paddingTop: m ? 60 : 100, paddingBottom: m ? 60 : 100 }}><Wrap><FadeIn><SL>Selected Work</SL><h2 style={{ fontFamily: FD, fontSize: m ? 28 : 42, color: t.text, margin: "0 0 44px 0", fontWeight: 400, lineHeight: 1.15 }}>Featured <span style={{ fontStyle: "italic" }}>Case Studies</span></h2></FadeIn><div style={{ display: "flex", flexDirection: "column", gap: 28 }}>{projects.map(p => <ProjectCard key={p.id} project={p} onOpen={onOpen} />)}</div></Wrap></section><ExperienceTimeline /><SkillsSection /><ContactSection /></>); }
+function HomePage({ onOpen }) { const { t } = useTheme(); const [as, setAs] = useState("about"); const m = useIsMobile(); useEffect(() => { const h = () => { for (const id of ["contact", "skills", "experience", "work", "about"]) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 300) { setAs(id); break; } } }; window.addEventListener("scroll", h); return () => window.removeEventListener("scroll", h); }, []); return (<><Nav activeSection={as} currentPage="home" goHome={() => window.scrollTo({ top: 0, behavior: "smooth" })} goTo={onOpen} /><Hero /><section id="work" style={{ paddingTop: m ? 60 : 100, paddingBottom: m ? 60 : 100 }}><Wrap><FadeIn><SL>Selected Work</SL><h2 style={{ fontFamily: FD, fontSize: m ? 28 : 42, color: t.text, margin: "0 0 44px 0", fontWeight: 400, lineHeight: 1.15 }}>Featured <span style={{ fontStyle: "italic" }}>Case Studies</span></h2></FadeIn><div style={{ display: "flex", flexDirection: "column", gap: 28 }}>{projects.map(p => <ProjectCard key={p.id} project={p} onOpen={onOpen} />)}</div></Wrap></section><ExperienceTimeline /><SkillsSection /><ContactSection /></>); }
 
 /* ═══ ROOT ═══ */
 export default function Portfolio() {
@@ -471,14 +489,14 @@ function PortfolioInner({ page, goTo, goHome, goZzazz }) {
   return (<>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap');*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}body{background:${t.bg};color:${t.text};overflow-x:hidden;transition:background 0.4s,color 0.4s;min-width:0;word-break:break-word}img,svg{max-width:100%;height:auto}::selection{background:${t.accent};color:${t.bg}}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:${t.bg}}::-webkit-scrollbar-thumb{background:${t.accent}50;border-radius:3px}button:focus-visible{outline:2px solid ${t.accent};outline-offset:2px}table{border-collapse:collapse;width:100%}.mobile-menu-btn{display:none!important}@media(max-width:768px){.mobile-menu-btn{display:flex!important}}`}</style>
     {page === "home" && <HomePage onOpen={goTo} />}
-    {page === "zzazz" && <><Nav currentPage="detail" goBack={goHome} goHome={goHome} /><ZZAZZDetail goBack={goHome} goTo={goTo} /></>}
-    {page === "zzazz-exchange" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} /><ZExchange goBack={goZzazz} /></>}
-    {page === "zzazz-publish" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} /><ZPublish goBack={goZzazz} /></>}
-    {page === "zzazz-moments" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} /><ZMoments goBack={goZzazz} /></>}
-    {page === "zzazz-timepay" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} /><ZTimePay goBack={goZzazz} /></>}
-    {page === "zzazz-adexchange" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} /><ZAdExchange goBack={goZzazz} /></>}
-    {page === "zzazz-dots" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} /><ZDOTS goBack={goZzazz} /></>}
-    {page === "mint-v8" && <><Nav currentPage="detail" goBack={goHome} goHome={goHome} /><MintV8Detail goBack={goHome} /></>}
-    {page === "gstr-3b" && <><Nav currentPage="detail" goBack={goHome} goHome={goHome} /><GSTR3BDetail goBack={goHome} /></>}
+    {page === "zzazz" && <><Nav currentPage="detail" goBack={goHome} goHome={goHome} goTo={goTo} /><ZZAZZDetail goBack={goHome} goTo={goTo} /></>}
+    {page === "zzazz-exchange" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} goTo={goTo} /><ZExchange goBack={goZzazz} /></>}
+    {page === "zzazz-publish" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} goTo={goTo} /><ZPublish goBack={goZzazz} /></>}
+    {page === "zzazz-moments" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} goTo={goTo} /><ZMoments goBack={goZzazz} /></>}
+    {page === "zzazz-timepay" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} goTo={goTo} /><ZTimePay goBack={goZzazz} /></>}
+    {page === "zzazz-adexchange" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} goTo={goTo} /><ZAdExchange goBack={goZzazz} /></>}
+    {page === "zzazz-dots" && <><Nav currentPage="detail" goBack={goZzazz} goHome={goHome} goTo={goTo} /><ZDOTS goBack={goZzazz} /></>}
+    {page === "mint-v8" && <><Nav currentPage="detail" goBack={goHome} goHome={goHome} goTo={goTo} /><MintV8Detail goBack={goHome} /></>}
+    {page === "gstr-3b" && <><Nav currentPage="detail" goBack={goHome} goHome={goHome} goTo={goTo} /><GSTR3BDetail goBack={goHome} /></>}
   </>);
 }
