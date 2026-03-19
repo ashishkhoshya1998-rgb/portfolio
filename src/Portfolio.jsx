@@ -74,23 +74,25 @@ function Nav({ activeSection, currentPage, goBack, goHome, goTo }) {
     { id: "mint-v8", label: "Mint V8 Design System", color: BLUE },
   ];
   return (<>
-    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: m ? "10px 20px" : "12px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", backdropFilter: "blur(20px)", background: t.navBg, borderBottom: `1px solid ${t.border}` }}>
-      <div style={{ display: "flex", alignItems: "center", gap: m ? 10 : 18 }}>
-        <div style={{ fontFamily: FD, fontSize: 22, color: t.accent, fontWeight: 700, cursor: "pointer" }} onClick={goHome}>AK<span style={{ color: t.text }}>.</span></div>
-        {currentPage === "detail" && goBack && (<><div style={{ width: 1, height: 18, background: t.border }} /><button onClick={goBack} style={{ background: "none", border: "none", color: t.muted, fontFamily: FB, fontSize: m ? 12 : 13, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, transition: "color 0.25s", padding: 0 }} onMouseEnter={e => e.currentTarget.style.color = t.accent} onMouseLeave={e => e.currentTarget.style.color = t.muted}><span style={{ fontSize: 14 }}>←</span> Back</button></>)}
-      </div>
-      <div style={{ display: "flex", alignItems: "center", gap: m ? 12 : 24 }}>
-        {currentPage === "home" && !m && links.map(l => (
-          <button key={l} onClick={() => scrollTo(l.toLowerCase())} style={{ background: "none", border: "none", cursor: "pointer", color: activeSection === l.toLowerCase() ? t.accent : t.muted, fontSize: 12, fontFamily: FB, letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 500, transition: "color 0.3s", padding: "0 0 2px 0", borderBottom: activeSection === l.toLowerCase() ? `1px solid ${t.accent}` : "1px solid transparent" }}>{l}</button>
-        ))}
-        <ThemeToggle />
-        {currentPage === "home" && (
-          <button className="mobile-menu-btn" onClick={() => setDrawer(true)} aria-label="Menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, flexDirection: "column", gap: 4 }}>
-            <div style={{ width: 20, height: 2, background: t.text, borderRadius: 1 }} />
-            <div style={{ width: 14, height: 2, background: t.accent, borderRadius: 1 }} />
-            <div style={{ width: 20, height: 2, background: t.text, borderRadius: 1 }} />
-          </button>
-        )}
+    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, backdropFilter: "blur(20px)", background: t.navBg, borderBottom: `1px solid ${t.border}` }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: m ? "10px 20px" : "12px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: m ? 10 : 18 }}>
+          <div style={{ fontFamily: FD, fontSize: 22, color: t.accent, fontWeight: 700, cursor: "pointer" }} onClick={goHome}>AK<span style={{ color: t.text }}>.</span></div>
+          {currentPage === "detail" && goBack && (<><div style={{ width: 1, height: 18, background: t.border }} /><button onClick={goBack} style={{ background: "none", border: "none", color: t.muted, fontFamily: FB, fontSize: m ? 12 : 13, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, transition: "color 0.25s", padding: 0 }} onMouseEnter={e => e.currentTarget.style.color = t.accent} onMouseLeave={e => e.currentTarget.style.color = t.muted}><span style={{ fontSize: 14 }}>←</span> Back</button></>)}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: m ? 12 : 24 }}>
+          {currentPage === "home" && !m && links.map(l => (
+            <button key={l} onClick={() => scrollTo(l.toLowerCase())} style={{ background: "none", border: "none", cursor: "pointer", color: activeSection === l.toLowerCase() ? t.accent : t.muted, fontSize: 12, fontFamily: FB, letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 500, transition: "color 0.3s", padding: "0 0 2px 0", borderBottom: activeSection === l.toLowerCase() ? `1px solid ${t.accent}` : "1px solid transparent" }}>{l}</button>
+          ))}
+          <ThemeToggle />
+          {currentPage === "home" && (
+            <button className="mobile-menu-btn" onClick={() => setDrawer(true)} aria-label="Menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, flexDirection: "column", gap: 4 }}>
+              <div style={{ width: 20, height: 2, background: t.text, borderRadius: 1 }} />
+              <div style={{ width: 14, height: 2, background: t.accent, borderRadius: 1 }} />
+              <div style={{ width: 20, height: 2, background: t.text, borderRadius: 1 }} />
+            </button>
+          )}
+        </div>
       </div>
     </nav>
     {/* Mobile Drawer */}
