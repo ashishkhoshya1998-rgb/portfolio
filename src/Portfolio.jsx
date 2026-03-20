@@ -38,6 +38,7 @@ function Wrap({ children, style = {} }) { const m = useIsMobile(); return <div s
 function MC({ metric, label, color }) { const { t } = useTheme(); return <div style={{ background: t.card, border: `1px solid ${t.border}`, padding: "28px 20px", textAlign: "center" }}><div style={{ fontFamily: FD, fontSize: 34, color, fontWeight: 700, lineHeight: 1 }}>{metric}</div><div style={{ fontFamily: FB, fontSize: 11, color: t.muted, letterSpacing: "0.5px", marginTop: 10 }}>{label}</div></div>; }
 
 function Img({ label, aspect = "16/9", color = AMBER, caption }) { const { t } = useTheme(); return (<FadeIn><div style={{ margin: "32px 0" }}><div style={{ aspectRatio: aspect, background: `linear-gradient(135deg, ${color}08 0%, ${color}03 100%)`, border: `1px dashed ${color}30`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, position: "relative", overflow: "hidden" }}><div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${color}06 1px, transparent 1px), linear-gradient(90deg, ${color}06 1px, transparent 1px)`, backgroundSize: "20px 20px", pointerEvents: "none" }} /><div style={{ width: 48, height: 48, borderRadius: "50%", border: `2px solid ${color}40`, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></svg></div><div style={{ fontFamily: FB, fontSize: 11, color: `${color}`, letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 600, textAlign: "center", padding: "0 20px", position: "relative", zIndex: 1 }}>{label}</div></div>{caption && <div style={{ fontFamily: FB, fontSize: 12, color: t.muted, marginTop: 10, fontStyle: "italic", textAlign: "center" }}>{caption}</div>}</div></FadeIn>); }
+function CsImg({ src, alt, caption }) { const { t } = useTheme(); return (<FadeIn><div style={{ margin: "32px 0" }}><img src={src} alt={alt} style={{ width: "100%", display: "block", borderRadius: 4, border: `1px solid ${t.border}` }} loading="lazy" />{caption && <div style={{ fontFamily: FB, fontSize: 12, color: t.muted, marginTop: 10, fontStyle: "italic", textAlign: "center" }}>{caption}</div>}</div></FadeIn>); }
 function BA({ beforeLabel, afterLabel }) { const m = useIsMobile(); return (<FadeIn><div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 16, margin: "32px 0" }}>{[{ l: beforeLabel, tag: "BEFORE", c: "#F55050" }, { l: afterLabel, tag: "AFTER", c: GREEN }].map((x, i) => (<div key={i} style={{ aspectRatio: "4/3", background: `linear-gradient(135deg, ${x.c}06 0%, transparent 100%)`, border: `1px dashed ${x.c}30`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, position: "relative" }}><div style={{ position: "absolute", top: 12, left: 12, fontFamily: FB, fontSize: 10, fontWeight: 700, letterSpacing: "2px", color: x.c, background: `${x.c}15`, padding: "4px 10px" }}>{x.tag}</div><div style={{ fontFamily: FB, fontSize: 11, color: "#8A8578", textAlign: "center", padding: "0 16px" }}>{x.l}</div></div>))}</div></FadeIn>); }
 function Vid({ label, color = AMBER }) { return (<FadeIn><div style={{ margin: "32px 0", aspectRatio: "16/9", background: `linear-gradient(135deg, ${color}06 0%, ${color}02 100%)`, border: `1px dashed ${color}25`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}><div style={{ width: 56, height: 56, borderRadius: "50%", background: `${color}12`, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="24" height="24" viewBox="0 0 24 24" fill={color}><polygon points="9.5,7.5 16.5,12 9.5,16.5" /></svg></div><div style={{ fontFamily: FB, fontSize: 12, color, letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 600 }}>{label}</div></div></FadeIn>); }
 
@@ -289,21 +290,26 @@ function GSTR3BDetail({ goBack }) { const { t } = useTheme(); const C = GREEN, m
   <Divider />
 
   <CS label="Design Solutions" labelColor={C} title="What I Built">
+    <CsImg src="/cs/gstr-wireframe-d.png" alt="Table-4 generation from reconciliation actions" caption="Wireframe: Table-4 auto-populated from reconciliation decisions — real-time audit trail" />
     <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8 }}>A. Data Source Selection Interface</h4>
     <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 16 }}>Table-specific mapping with dropdown menus (e.g., "Table-4: GSTR-2B + PR"), smart auto-suggested defaults for SMEs, and a preview mode to validate auto-filled values before proceeding.</p>
-    <Img label="Data Source Selection — table-wise mapping with smart defaults" color={C} />
+    <CsImg src="/cs/gstr-wireframe-a.png" alt="Data Source Selection interface — table-wise mapping with smart defaults" caption="Wireframe: Data Source Selection — table-wise mapping with smart defaults" />
     <Divider />
     <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8, marginTop: 28 }}>B. Multi-GSTIN Filing Dashboard</h4>
     <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 16 }}>Centralised status overview tracking pending filings, tax liabilities, and ITC statuses. Batch filing for 10+ GSTINs in one click. Enterprises activated 20+ GSTINs in under 10 minutes.</p>
     <QB text="I need to see which GSTINs are due at a glance." author="Sunita, CFO — Manufacturing Firm" color={C} />
-    <Img label="Multi-GSTIN Dashboard — batch filing and status overview" color={C} />
+    <CsImg src="/cs/gstr-wireframe-b.png" alt="Multi-GSTIN Filing Dashboard — batch filing and status overview" caption="Wireframe: Multi-GSTIN Dashboard — batch filing for 10+ GSTINs in one click" />
     <Divider />
     <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8, marginTop: 28 }}>C. Pre-Filing Reconciliation Engine</h4>
     <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 16 }}>Split-view comparison of GSTR-2B vs Purchase Register with mismatches highlighted. Bulk approve/reject for 100+ invoices in one click. Vendor grouping and partial invoice matching added post-launch.</p>
-    <Img label="Reconciliation Engine — split-view with live Table-4 impact" color={C} />
+    <CsImg src="/cs/gstr-wireframe-c.png" alt="Pre-Filing Reconciliation Engine — split-view comparison" caption="Wireframe: Reconciliation Engine — GSTR-2B vs PR split-view with bulk actions" />
+    <CsImg src="/cs/gstr-data-prep.gif" alt="Data preparation workflow in action" caption="Live: Data preparation — import, validate, and reconcile" />
     <Divider />
     <h4 style={{ fontFamily: FB, fontSize: 17, color: t.text, fontWeight: 600, marginBottom: 8, marginTop: 28 }}>D. Table-4 Live Preview</h4>
     <DC color={C} title="How to Surface Table-4 Impact" context="Users didn't trust auto-generated values and couldn't see how reconciliation decisions affected their ITC computations." options={[{ text: "Tooltip per cell", chosen: false }, { text: "Side panel with live preview as decisions are made", chosen: true }, { text: "Post-fill summary only", chosen: false }]} reasoning="Live side panel shows cause-and-effect in real time. Each reconciliation action immediately updates Table-4 — turning a black box into a transparent, trustworthy system." />
+    <CsImg src="/cs/gstr-tax-calc.gif" alt="Tax calculation review and offset step" caption="Live: Tax calculation review — government vs Clear GST logic comparison" />
+    <CsImg src="/cs/gstr-upload.gif" alt="Upload to GSTN with multi-challan creation" caption="Live: Upload to GSTN — OTP authentication and real-time ledger sync" />
+    <CsImg src="/cs/gstr-filing.gif" alt="Filing and status review across all GSTINs" caption="Live: Filing & status dashboard — one-click filing, EVC/DSC integration" />
   </CS>
   <Divider />
 
@@ -331,9 +337,11 @@ function GSTR3BDetail({ goBack }) { const { t } = useTheme(); const C = GREEN, m
   <CS label="Iterations" labelColor={C} title="How I Fixed It">
     <PS number={1} title="Data Source: Contextual Integration" description="Moved data source configuration inside the GSTR-3B form itself. Users could now adjust sources while reviewing Table-4 — eliminating the standalone 'gatekeeper' step. Drop-off: 47% → near-zero." color={C} />
     <BA beforeLabel="Standalone data source page (47% abandoned)" afterLabel="Inline source controls inside filing form" />
+    <CsImg src="/cs/gstr-datasrc-redesign.gif" alt="Data source redesign — contextual inline configuration" caption="Iteration: Data source controls moved inline — from blocker to enabler" />
     <PS number={2} title="Transparent Table-4 Workflow" description="Introduced real-time Table-4 impact previews in the reconciliation table. Each row shows live impact on ITC — turning a black box into a transparent flow users could trust." color={C} />
-    <Img label="Table-4 live preview — reconciliation drives real-time ITC updates" color={C} />
+    <CsImg src="/cs/gstr-table4.gif" alt="Table-4 live preview — reconciliation drives real-time ITC updates" caption="Iteration: Table-4 live preview — every reconciliation action updates ITC in real time" />
     <PS number={3} title="Excel-Free In-Platform Grouping" description="Introduced grouping and subgrouping capabilities to enable efficient bulk actions — replacing the need for Excel pivot tables natively." color={C} />
+    <CsImg src="/cs/gstr-excel-free.gif" alt="In-platform grouping and bulk actions replacing Excel pivot tables" caption="Iteration: Native grouping eliminates Excel dependency" />
     <PS number={4} title="Multi-GSTIN Auto OTP Capture" description="Streamlined the upload process with automated OTP capture for multiple GSTINs (with user consent). Filing time: 30 min → 2 min per GSTIN batch." color={C} />
     <QB text="Finally, I can adjust sources right where I need them!" author="Deepak, MSME Owner" color={C} />
     <QB text="The live previews made Table-4 feel less like a mystery." author="Meera, Tax Consultant" color={C} />
@@ -370,6 +378,7 @@ function GSTR3BDetail({ goBack }) { const { t } = useTheme(); const C = GREEN, m
 /* ═══ MINT V8 — FULL DEPTH ═══ */
 function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m = useIsMobile(); useEffect(() => { window.scrollTo(0, 0); }, []); return (<Wrap>
   <Hero2 title="Mint V8 Design System" subtitle="Token-Based, Theme-Ready System with PCS Logic" category="Design System" date="Mar 2023" role="Design System Lead" team="1 Frontend Dev · 4 Product Designers · Design Manager" color={C} overview="At Clear, we faced a growing design crisis: fragmented systems across Finance Cloud and Supply Chain Cloud, engineers hardcoding UI because they couldn't trust Figma, and 700+ button variants with zero docs. I led Mint V8 from scratch — inventing PCS Logic that reduced component variants by over 80% and achieved 100% team adoption in 6 weeks." myRole="Led the entire initiative from ideation to implementation. Conducted research on token systems and atomic design, created the foundational token structure, designed core components, authored PCS logic, collaborated with developers to align system in Figma and code, and trained cross-functional teams." />
+  <CsImg src="/cs/mint-hero.jpg" alt="Mint V8 Design System overview" />
 
   <CS label="The Challenge" labelColor={C} title="Five Reasons We Needed to Start Over">
     <PS number={1} title="Fragmented Systems" description="Products under Clear Finance Cloud and Supply Chain Cloud lacked a consistent UI — some used outdated Basil, others a barebones Mint library with no shared logic." color={C} />
@@ -384,6 +393,7 @@ function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m 
   <CS label="Phase 1 · Foundation" labelColor={C} title="Tokens Before Everything">
     <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 20 }}>I had never led a full design system build. I started by studying Material Design, Carbon, and atomic design principles. One insight stood out: <strong style={{ color: t.text }}>everything scalable starts with a token system.</strong> Tokens abstract the complexity of visual attributes into manageable, code-friendly constants.</p>
     <DC color={C} title="Token-First vs Component-First" context="The team wanted quick wins — ship some components now. But without tokens, we'd be painting over the same cracks." options={[{ text: "Components first — faster visible progress", chosen: false }, { text: "Tokens first — components inherit theming automatically", chosen: true }]} reasoning="'Paint the walls now, or fix the plumbing first.' A 3-week token foundation was approved. Every component built after would be theme-ready by default." />
+    <CsImg src="/cs/mint-token-arch.gif" alt="Token architecture build process" caption="Building the token architecture — color, spacing, typography, elevation" />
     <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, margin: "20px 0 12px" }}>We structured tokens into four categories:</p>
     <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(2,1fr)", gap: 14, marginBottom: 24 }}>{[
       { icon: "Aa", title: "Typography Tokens", desc: "Type scale, font weights, line heights, letter spacing — semantically named by usage context (Display L, Body M, Label S, etc.)" },
@@ -396,6 +406,7 @@ function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m 
       ["On Primary", "mint.cfc.sys.color.on-primary", "mint.cfc.ref.color.base-white", "#FFFFFF"],
       ["Primary Container", "mint.cfc.sys.color.primary-container", "mint.cfc.ref.color.blue-50", "#EFF8FF"],
     ]} />
+    <CsImg src="/cs/mint-color-tokens.png" alt="Color token system — functional naming over appearance naming" caption="Color tokens: functional names (primary, on-primary) map to different values per theme" />
   </CS>
   <Divider />
 
@@ -407,16 +418,18 @@ function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m 
       { label: "Organisms", desc: "Forms, Modals, Toolbars, Tables — complex structures composed of molecules", color: `${C}06`, border: `${C}15` },
     ].map((a, i) => <FadeIn key={i} delay={i * 0.1}><div style={{ padding: 22, background: a.color, border: `1px solid ${a.border}`, borderRadius: 4, textAlign: "center" }}><div style={{ fontFamily: FD, fontSize: 20, color: C, fontWeight: 600, marginBottom: 8 }}>{a.label}</div><p style={{ fontFamily: FB, fontSize: 13, lineHeight: 1.6, color: t.subtle, margin: 0 }}>{a.desc}</p></div></FadeIn>)}</div>
     <p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle }}>We also noticed a visual imbalance when icons appeared too bold or light compared to text. We created <strong style={{ color: t.text }}>dynamic icon sets</strong> — each icon in multiple visual weights (body, label) — so designers could switch based on component prominence. This brought significant improvement to visual rhythm and hierarchy.</p>
+    <CsImg src="/cs/mint-icons.gif" alt="Dynamic icon sets switching between visual weights" caption="Dynamic icons — multiple weights per icon, switched by context and prominence" />
   </CS>
   <Divider />
 
   <CS label="Breakthrough" labelColor={C} title="Discovering PCS Logic">
     <p style={{ fontFamily: FB, fontSize: 16, lineHeight: 1.8, color: t.subtle, marginBottom: 20 }}>As we built molecules, we hit a wall — component bloat. 760+ button variants. Engineers still hardcoding. Then a whiteboard session revealed a powerful pattern: <strong style={{ color: C }}>nearly every component = Prefix + Content + Suffix.</strong></p>
-    <Img label="Whiteboard: PCS discovery — the universal component shell" color={C} aspect="4/3" />
+    <CsImg src="/cs/mint-button.gif" alt="PCS-based button component — prefix, content, suffix slots" caption="PCS Logic in action: button variants reduced from 760 to 32 using the universal shell" />
     <DC color={C} title="PCS Slot Granularity" context="How constrained should each P, C, S slot be? Open means anything goes, fixed means no flexibility." options={[{ text: "Fully open slots", chosen: false }, { text: "Constrained per component type", chosen: true }, { text: "Fixed — locked to one pattern", chosen: false }]} reasoning="Constrained slots = flexibility within guardrails. Buttons: prefix=icons only, content=text, suffix=icons/counters. This prevented misuse while enabling every real-world variant." />
     <p style={{ fontFamily: FB, fontSize: 15, lineHeight: 1.7, color: t.subtle, margin: "20px 0 12px" }}>The impact was immediate — we rebuilt components using PCS logic and slashed variant counts:</p>
     <FadeIn><div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3,1fr)", gap: 14, marginBottom: 24 }}>{[{ c: "Buttons", b: "760", a: "32" }, { c: "Badges", b: "624", a: "25" }, { c: "Inputs", b: "113", a: "40" }].map((v, i) => <div key={i} style={{ padding: 22, background: t.card, border: `1px solid ${t.border}`, textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 14, color: t.text, fontWeight: 600, marginBottom: 14 }}>{v.c}</div><div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}><span style={{ fontFamily: FD, fontSize: 22, color: t.muted, textDecoration: "line-through" }}>{v.b}</span><span style={{ color: C, fontWeight: 700 }}>→</span><span style={{ fontFamily: FD, fontSize: 30, color: C, fontWeight: 700 }}>{v.a}</span></div></div>)}</div></FadeIn>
     <BA beforeLabel="760 button variants — maintenance nightmare" afterLabel="32 via PCS — every variant covered" />
+    <CsImg src="/cs/mint-organisms.jpg" alt="Organisms built from PCS components — filter bars, forms, tables" caption="Organisms assembled from PCS molecules: filter bars, form builders, data tables" />
     <QB text="The PCS logic literally saved us weeks in component rebuilding." author="Product Designer, Mint V8 team" color={C} />
   </CS>
   <Divider />
@@ -427,7 +440,7 @@ function MintV8Detail({ goBack }) { const { t } = useTheme(); const C = BLUE, m 
       <FadeIn><div style={{ padding: 28, background: "rgba(21,108,239,0.08)", border: "1px solid rgba(21,108,239,0.2)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 11, color: BLUE, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: 8 }}>Clear Finance Cloud</div><div style={{ fontFamily: FD, fontSize: 24, color: BLUE, marginBottom: 6 }}>Blue 600</div><div style={{ fontFamily: FB, fontSize: 12, color: t.muted }}>mint.cfc.sys.color.primary → #156CEF</div></div></FadeIn>
       <FadeIn delay={0.1}><div style={{ padding: 28, background: "rgba(147,51,234,0.08)", border: "1px solid rgba(147,51,234,0.2)", textAlign: "center", borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 11, color: "#9333EA", fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: 8 }}>Clear Supply Chain</div><div style={{ fontFamily: FD, fontSize: 24, color: "#9333EA", marginBottom: 6 }}>Purple 600</div><div style={{ fontFamily: FB, fontSize: 12, color: t.muted }}>mint.csc.sys.color.primary → #9333EA</div></div></FadeIn>
     </div>
-    <Img label="Theme switching demo — CFC → CSC with zero component changes" color={C} />
+    <CsImg src="/cs/mint-theming.gif" alt="Theme switching from Clear Finance Cloud to Clear Supply Chain" caption="Live theming: CFC (blue) → CSC (purple) — zero component changes, only token value swaps" />
   </CS>
   <Divider />
 
