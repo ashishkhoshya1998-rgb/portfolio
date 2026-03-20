@@ -47,7 +47,38 @@ function DC({ title, context, options, reasoning, color }) { const { t } = useTh
 function Hero2({ title, subtitle, category, date, role, team, color, overview, myRole }) { const { t } = useTheme(); const [ld, setLd] = useState(false); const m = useIsMobile(); useEffect(() => { setTimeout(() => setLd(true), 100); }, []); return (<section style={{ minHeight: m ? "auto" : "70vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", paddingTop: m ? 100 : 120, paddingBottom: m ? 48 : 80, position: "relative", overflow: "hidden" }}><div style={{ position: "absolute", top: 0, right: "-10%", width: m ? 250 : 500, height: m ? 250 : 500, borderRadius: "50%", background: `radial-gradient(circle, ${color}12 0%, transparent 60%)`, filter: "blur(80px)", pointerEvents: "none" }} /><div style={{ position: "relative", zIndex: 1, maxWidth: 860, width: "100%", opacity: ld ? 1 : 0, transform: ld ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.22,1,0.36,1) 0.2s" }}><div style={{ fontFamily: FB, fontSize: 11, letterSpacing: "2.5px", textTransform: "uppercase", fontWeight: 600, color, marginBottom: 16 }}>{category}</div><h1 style={{ fontFamily: FD, fontSize: m ? 28 : "clamp(38px,5.5vw,64px)", lineHeight: 1.08, color: t.text, margin: 0, fontWeight: 400 }}>{title}</h1><p style={{ fontFamily: FB, fontSize: m ? 14 : 18, color: t.muted, fontStyle: "italic", marginTop: 12 }}>{subtitle}</p><p style={{ fontFamily: FB, fontSize: m ? 14 : 16, lineHeight: 1.8, color: t.subtle, maxWidth: 640, marginTop: m ? 16 : 28 }}>{overview}</p>{myRole && <div style={{ marginTop: 24, padding: "20px 24px", background: `${color}08`, border: `1px solid ${color}15`, borderRadius: 4 }}><div style={{ fontFamily: FB, fontSize: 10, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color, marginBottom: 8 }}>My Specific Role</div><p style={{ fontFamily: FB, fontSize: 14, color: t.subtle, lineHeight: 1.6, margin: 0 }}>{myRole}</p></div>}<div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>{[role, team, date].map((x, i) => <span key={i} style={{ fontFamily: FB, fontSize: 11, color: t.muted, background: t.card, padding: "5px 14px", border: `1px solid ${t.border}` }}>{x}</span>)}</div></div></section>); }
 
 function CS({ label, labelColor, title, children }) { const { t } = useTheme(); return <FadeIn><div style={{ marginBottom: 56 }}><SL color={labelColor}>{label}</SL>{title && <h3 style={{ fontFamily: FD, fontSize: 28, color: t.text, margin: "0 0 20px 0", fontWeight: 400, lineHeight: 1.2 }}>{title}</h3>}{children}</div></FadeIn>; }
-function CT({ headers, rows }) { const { t } = useTheme(); const m = useIsMobile(); return (<div style={{ overflowX: "auto", marginTop: 20, WebkitOverflowScrolling: "touch", margin: "20px -20px 0", padding: "0 20px" }}><table style={{ width: "100%", borderCollapse: "collapse", fontFamily: FB, fontSize: m ? 12 : 14, minWidth: 420 }}><thead><tr>{headers.map((h, i) => <th key={i} style={{ textAlign: "left", padding: m ? "10px 12px" : "14px 18px", borderBottom: `2px solid ${t.border}`, color: t.accent, fontWeight: 600, fontSize: m ? 10 : 11, letterSpacing: "1.5px", textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>)}</tr></thead><tbody>{rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} style={{ padding: m ? "10px 12px" : "14px 18px", borderBottom: `1px solid ${t.border}`, color: ci === 0 ? t.text : t.subtle, fontWeight: ci === 0 ? 500 : 400, fontSize: m ? 12 : 14 }}>{c}</td>)}</tr>)}</tbody></table></div>); }
+function CT({ headers, rows }) {
+  const { t } = useTheme();
+  const m = useIsMobile();
+  if (m) {
+    const dataHeaders = headers.slice(1);
+    return (
+      <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+        {rows.map((r, ri) => (
+          <div key={ri} style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, overflow: "hidden" }}>
+            <div style={{ padding: "12px 16px", borderBottom: `1px solid ${t.border}`, fontFamily: FB, fontWeight: 600, fontSize: 13, color: t.text }}>{r[0]}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0 }}>
+              {dataHeaders.map((h, i) => (
+                <div key={i} style={{ padding: "10px 16px", borderRight: i % 2 === 0 ? `1px solid ${t.border}` : "none", borderBottom: i < dataHeaders.length - 2 ? `1px solid ${t.border}` : "none" }}>
+                  <div style={{ fontFamily: FB, fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase", color: t.accent, fontWeight: 600, marginBottom: 4 }}>{h}</div>
+                  <div style={{ fontFamily: FB, fontSize: 13, color: t.subtle }}>{r[i + 1]}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div style={{ overflowX: "auto", margin: "20px -20px 0", padding: "0 20px" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: FB, fontSize: 14, minWidth: 420 }}>
+        <thead><tr>{headers.map((h, i) => <th key={i} style={{ textAlign: "left", padding: "14px 18px", borderBottom: `2px solid ${t.border}`, color: t.accent, fontWeight: 600, fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>)}</tr></thead>
+        <tbody>{rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} style={{ padding: "14px 18px", borderBottom: `1px solid ${t.border}`, color: ci === 0 ? t.text : t.subtle, fontWeight: ci === 0 ? 500 : 400, fontSize: 14 }}>{c}</td>)}</tr>)}</tbody>
+      </table>
+    </div>
+  );
+}
 function PS({ number, title, description, color }) { const { t } = useTheme(); return <FadeIn delay={number * 0.06}><div style={{ display: "flex", gap: 24, marginBottom: 28, alignItems: "flex-start" }}><div style={{ minWidth: 42, height: 42, borderRadius: "50%", border: `2px solid ${color}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FD, fontSize: 17, color, fontWeight: 600, flexShrink: 0 }}>{number}</div><div><div style={{ fontFamily: FB, fontSize: 15, color: t.text, fontWeight: 600, marginBottom: 4 }}>{title}</div><p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, margin: 0 }}>{description}</p></div></div></FadeIn>; }
 function QB({ text, author, color }) { const { t } = useTheme(); return <FadeIn><div style={{ borderLeft: `3px solid ${color}`, paddingLeft: 24, margin: "28px 0" }}><p style={{ fontFamily: FD, fontSize: 19, color: t.text, fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>"{text}"</p>{author && <div style={{ fontFamily: FB, fontSize: 13, color: t.muted, marginTop: 8 }}>— {author}</div>}</div></FadeIn>; }
 function KF({ icon, title, problem, example, data, color }) { const { t } = useTheme(); return <FadeIn><div style={{ background: t.card, border: `1px solid ${t.border}`, padding: 24, marginBottom: 14, borderRadius: 4 }}><div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}><span style={{ fontSize: 18 }}>{icon}</span><div style={{ fontFamily: FB, fontSize: 14, color: t.text, fontWeight: 600 }}>{title}</div></div><p style={{ fontFamily: FB, fontSize: 14, lineHeight: 1.7, color: t.subtle, marginBottom: 8 }}>{problem}</p>{example && <p style={{ fontFamily: FB, fontSize: 13, color, fontStyle: "italic" }}>{example}</p>}{data && <div style={{ fontFamily: FB, fontSize: 12, color: t.accent, marginTop: 6, fontWeight: 600 }}>{data}</div>}</div></FadeIn>; }
